@@ -31,6 +31,7 @@ player_img2 = pygame.image.load("pennginn2.png").convert_alpha()
 player_img2 = pygame.transform.scale(player_img2, (80, 80))
 walk_count = 0
 walk_switch = False
+flip_switch = False
 
 # 敵（クマ）
 enemy_img1 = pygame.image.load("tekikuma1.png").convert_alpha()
@@ -84,6 +85,11 @@ while True:
             walk_count = 0
             walk_switch = False
 
+        if move_x < 0:
+            flip_switch = True
+        elif move_x > 0:
+            flip_switch = False
+
         # キャラ or 背景を移動
         if (move_x < 0 and player.x > LEFT_LIMIT) or (move_x > 0 and player.x < RIGHT_LIMIT):
             player.x += move_x
@@ -95,7 +101,6 @@ while True:
             on_ground = False
 
         screen.blit(background, (0, 0))
-
         enemy_rect = None
         for i in range(5):
             x_offset = ground_rect.x + ground_x + i * ground_rect.width
@@ -114,7 +119,7 @@ while True:
                     enemy_dir = random.choice([-1, 0, 1])
                     enemy_timer = 0
 
-                enemy_x += enemy_dir * 2
+                enemy_x += enemy_dir * 10
                 enemy_x = max(x_offset, min(enemy_x, x_offset + ground_rect.width - 80))
                 enemy_img = enemy_img2 if enemy_dir != 0 else enemy_img1
 
@@ -157,9 +162,15 @@ while True:
             game_over = True
 
         if walk_switch:
-            screen.blit(player_img2, (player.x - 5, player.y - 10))
+            if not flip_switch:
+                screen.blit(player_img2, (player.x - 5, player.y - 10))
+            else:
+                screen.blit(pygame.transform.flip(player_img2, True, False), (player.x - 5, player.y - 10))
         else:
-            screen.blit(player_img1, (player.x - 5, player.y - 10))
+            if not flip_switch:
+                screen.blit(player_img1, (player.x - 5, player.y - 10))
+            else:
+                screen.blit(pygame.transform.flip(player_img1, True, False), (player.x - 5, player.y - 10))
 
     else:
         screen.blit(background, (0, 0))

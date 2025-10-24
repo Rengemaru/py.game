@@ -27,7 +27,7 @@ on_ground = True
 
 player_img1 = pygame.image.load("pennginn1.png").convert_alpha()
 player_img1 = pygame.transform.scale(player_img1, (80, 80))
-player_img2 = pygame.image.load("pennginn2.png").convert_alpha()
+player_img2 = 0
 player_img2 = pygame.transform.scale(player_img2, (80, 80))
 walk_count = 0
 walk_switch = False
@@ -72,9 +72,9 @@ while True:
     if not game_over and not game_clear:
         move_x = 0
         if keys[pygame.K_a] and (player.x > LEFT_LIMIT or ground_x < 0):
-            move_x = -MOVE_SPEED
+            
         if keys[pygame.K_d]:
-            move_x = MOVE_SPEED
+            
 
         # アニメーション制御
         if move_x != 0:
@@ -97,7 +97,7 @@ while True:
             ground_x -= move_x
 
         if keys[pygame.K_SPACE] and on_ground:
-            player_speed_y = jump_power
+            
             on_ground = False
 
         screen.blit(background, (0, 0))
